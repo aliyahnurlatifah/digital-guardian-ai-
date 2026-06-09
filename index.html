@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Guardian AI - Detektor Cyberbullying</title>
+    <!-- Tailwind CSS untuk Desain Modern & Cepat -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between">
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="border-b border-slate-800 bg-slate-950/50 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="bg-indigo-600 p-2 rounded-lg text-white font-bold text-xl shadow-lg shadow-indigo-500/20">🛡️</div>
+                <span class="font-bold text-xl tracking-tight bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">Digital Guardian AI</span>
+            </div>
+            <nav class="hidden md:flex gap-6 text-sm font-medium text-slate-400">
+                <a href="#" class="text-indigo-400 hover:text-indigo-300 transition">Detektor</a>
+                <a href="#edukasi" class="hover:text-slate-200 transition">Edukasi ITE</a>
+                <a href="#tentang" class="hover:text-slate-200 transition">Tentang Kami</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="max-w-4xl mx-auto px-6 py-12 w-full flex-grow flex flex-col justify-center">
+        <!-- Hero Section -->
+        <div class="text-center mb-10">
+            <span class="px-3 py-1 text-xs font-semibold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 rounded-full uppercase tracking-wider">Mata Kuliah: Literasi Digital & Kemanusiaan</span>
+            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mt-4 mb-4 bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
+                Saring Komentar, <br class="sm:hidden"> Selamatkan Jiwa Manusia
+            </h1>
+            <p class="text-slate-400 max-w-xl mx-auto text-sm md:text-base">
+                Prototipe AI NLP berbasis aturan cerdas untuk menyaring ujaran kebencian, toksisitas, dan cyberbullying demi ruang siber yang lebih humanis.
+            </p>
+        </div>
+
+        <!-- AI Simulator Card -->
+        <div class="bg-slate-950 border border-slate-800 rounded-2xl p-6 md:p-8 shadow-2xl relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 via-yellow-500 to-red-500"></div>
+            
+            <label for="inputText" class="block text-sm font-semibold text-slate-300 mb-3 flex items-center gap-2">
+                <span>📝 Tempel atau ketik komentar di bawah ini:</span>
+            </label>
+            
+            <textarea id="inputText" rows="4" 
+                class="w-full bg-slate-900 border border-slate-800 rounded-xl p-4 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition resize-none mb-4 text-sm md:text-base"
+                placeholder="Contoh: 'Dasar culun, gak usah sok gaya lu di medsos!'"></textarea>
+
+            <button onclick="analyzeText()" 
+                class="w-full bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg shadow-indigo-600/20 transition duration-200 transform active:scale-[0.99] flex items-center justify-center gap-2">
+                🔍 Analisis Sentimen Komentar
+            </button>
+
+            <!-- RESULT AREA (Hidden by default, shown via JS) -->
+            <div id="resultArea" class="mt-8 pt-6 border-t border-slate-800 hidden animate-fade-in">
+                <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">Hasil Klasifikasi AI:</h3>
+                
+                <!-- Status Badge -->
+                <div id="statusBadge" class="inline-flex items-center gap-2 px-4 py-2 rounded-full font-bold text-sm mb-6">
+                    <!-- Dynamic Text & Icon via JS -->
+                </div>
+
+                <!-- Progress Bar / Confidence Score -->
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex justify-between text-xs font-medium mb-1">
+                            <span class="text-emerald-400">Komentar Positif</span>
+                            <span id="scorePositif" class="text-slate-400">0%</span>
+                        </div>
+                        <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                            <div id="barPositif" class="bg-emerald-500 h-full transition-all duration-500" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs font-medium mb-1">
+                            <span class="text-yellow-400">Komentar Netral</span>
+                            <span id="scoreNetral" class="text-slate-400">0%</span>
+                        </div>
+                        <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                            <div id="barNetral" class="bg-yellow-500 h-full transition-all duration-500" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs font-medium mb-1">
+                            <span class="text-red-400">Cyberbullying / Ujaran Negatif</span>
+                            <span id="scoreNegatif" class="text-slate-400">0%</span>
+                        </div>
+                        <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                            <div id="barNegatif" class="bg-red-500 h-full transition-all duration-500" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Edukasi / Tindakan Lanjut -->
+                <div id="eduMitigation" class="mt-6 p-4 rounded-xl text-xs md:text-sm border hidden">
+                    <!-- Dynamic Message via JS -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-slate-800 bg-slate-950 py-6 text-center text-xs text-slate-500">
+        <p>© 2026 Digital Guardian AI. Dibuat dengan 💙 untuk Kemanusiaan Digital.</p>
+    </footer>
+
+    <!-- PROTOTYPE SIMULATION ENGINE (JAVASCRIPT) -->
+    <script>
+        // Kamus Kata Kunci Sederhana untuk Mensimulasikan Model NLP Teachable Machine
+        const keywordsNegatif = ['jelek', 'bodoh', 'tolol', 'sampah', 'pansos', 'gendut', 'burik', 'mati', 'busuk', 'baper', 'cacat', 'miskin', 'culun', 'bacot', 'pamer', 'sok'];
+        const keywordsPositif = ['keren', 'hebat', 'mantap', 'sukses', 'semangat', 'bagus', 'terpuji', 'inspirasi', 'terima kasih', 'makasih', 'kreatif', 'salut', 'suka', 'bakat', 'lucu', 'indah'];
+
+        function analyzeText() {
+            const text = document.getElementById('inputText').value.trim().toLowerCase();
+            const resultArea = document.getElementById('resultArea');
+            
+            if (!text) {
+                alert('Silakan masukkan teks komentar terlebih dahulu.');
+                return;
+            }
+
+            resultArea.classList.remove('hidden');
+
+            let countNegatif = 0;
+            let countPositif = 0;
+
+            // Hitung kecocokan kata kunci
+            keywordsNegatif.forEach(word => { if (text.includes(word)) countNegatif++; });
+            keywordsPositif.forEach(word => { if (text.includes(word)) countPositif++; });
+
+            let pPositif = 10;
+            let pNetral = 80;
+            let pNegatif = 10;
+
+            // Logika Penentuan Skor Probabilitas AI
+            if (countNegatif > 0 && countNegatif >= countPositif) {
+                pNegatif = Math.min(85 + (countNegatif * 5), 99);
+                pPositif = Math.max(5, 10 - (countNegatif * 2));
+                pNetral = 100 - pNegatif - pPositif;
+            } else if (countPositif > 0 && countPositif > countNegatif) {
+                pPositif = Math.min(85 + (countPositif * 5), 99);
+                pNegatif = Math.max(5, 10 - (countPositif * 2));
+                pNetral = 100 - pPositif - pNegatif;
+            } else {
+                // Jika tidak ada kata kunci khusus, default ke Netral dominan
+                pNetral = 85;
+                pPositif = 8;
+                pNegatif = 7;
+            }
+
+            // Update Tampilan Angka dan Progress Bar
+            document.getElementById('scorePositif').innerText = pPositif + '%';
+            document.getElementById('barPositif').style.width = pPositif + '%';
+            
+            document.getElementById('scoreNetral').innerText = pNetral + '%';
+            document.getElementById('barNetral').style.width = pNetral + '%';
+            
+            document.getElementById('scoreNegatif').innerText = pNegatif + '%';
+            document.getElementById('barNegatif').style.width = pNegatif + '%';
+
+            // Ubah Status Badge & Edukasi Berdasarkan Skor Tertinggi
+            const badge = document.getElementById('statusBadge');
+            const edu = document.getElementById('eduMitigation');
+
+            if (pNegatif > pPositif && pNegatif > pNetral) {
+                badge.className = "inline-flex items-center gap-2 px-4 py-2 rounded-full font-bold text-sm mb-6 bg-red-500/10 border border-red-500/30 text-red-400";
+                badge.innerHTML = "🚨 Terdeteksi: Cyberbullying / Ujaran Negatif";
+                
+                edu.className = "mt-6 p-4 rounded-xl text-xs md:text-sm border bg-red-500/5 border-red-500/20 text-red-300";
+                edu.innerHTML = "<strong>Pesan Etika:</strong> Hindari membalas dengan amarah. Jika komentar ini merugikan reputasi atau kesehatan mental Anda, amankan bukti screenshot dan laporkan ke platform terkait sesuai koridor UU ITE Pasal 27A.";
+                edu.classList.remove('hidden');
+            } else if (pPositif > pNegatif && pPositif > pNetral) {
+                badge.className = "inline-flex items-center gap-2 px-4 py-2 rounded-full font-bold text-sm mb-6 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400";
+                badge.innerHTML = "✨ Terdeteksi: Komentar Positif";
+                
+                edu.className = "mt-6 p-4 rounded-xl text-xs md:text-sm border bg-emerald-500/5 border-emerald-500/20 text-emerald-300";
+                edu.innerHTML = "<strong>Pesan Etika:</strong> Luar biasa! Komentar ini membangun energi positif di ekosistem digital. Teruskan budaya saling mengapresiasi karya sesama manusia.";
+                edu.classList.remove('hidden');
+            } else {
+                badge.className = "inline-flex items-center gap-2 px-4 py-2 rounded-full font-bold text-sm mb-6 bg-yellow-500/10 border border-yellow-500/30 text-yellow-400";
+                badge.innerHTML = "💬 Terdeteksi: Komentar Netral / Pertanyaan";
+                
+                edu.className = "mt-6 p-4 rounded-xl text-xs md:text-sm border bg-yellow-500/5 border-yellow-500/20 text-yellow-300";
+                edu.innerHTML = "<strong>Pesan Etika:</strong> Kalimat ini bersifat informatif atau pertanyaan umum. Ruang siber tetap kondusif ketika komunikasi berjalan logis tanpa sentimen emosional.";
+                edu.classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
